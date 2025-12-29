@@ -6,11 +6,9 @@
     <link rel="shortcut icon" href="https://upload.wikimedia.org/wikipedia/commons/8/8a/Google_Gemini_logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <meta name="theme-color" content="#f8fafc" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <title>KAA CRM Mobile</title>
     
-    <!-- Polyfill process.env for browser environments to prevent crash on API_KEY access -->
+    <!-- Polyfill for runtime safety if env vars fail to inject -->
     <script>
       window.process = window.process || { env: { API_KEY: '' } };
     </script>
@@ -22,13 +20,13 @@
           extend: {
             colors: {
               nexus: {
-                900: '#f8fafc', // Slate 50 (Main Background)
-                800: '#ffffff', // White (Card Background)
-                700: '#e2e8f0', // Slate 200 (Borders)
-                text: '#0f172a', // Slate 900 (Main Text)
-                sub: '#64748b',  // Slate 500 (Sub Text)
-                accent: '#4f46e5', // Indigo 600
-                accentHover: '#4338ca', // Indigo 700
+                900: '#f8fafc',
+                800: '#ffffff',
+                700: '#e2e8f0',
+                text: '#0f172a',
+                sub: '#64748b',
+                accent: '#4f46e5',
+                accentHover: '#4338ca',
               }
             },
             fontFamily: {
@@ -67,49 +65,24 @@
       
       body {
         font-family: 'Inter', sans-serif;
-        overscroll-behavior-y: none; /* Prevent pull-to-refresh on mobile */
+        overscroll-behavior-y: none;
         -webkit-tap-highlight-color: transparent;
       }
-      
-      .no-scrollbar::-webkit-scrollbar {
-          display: none;
-      }
-      .no-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-      }
-
-      /* Native-like smooth scrolling */
-      .smooth-scroll {
-        -webkit-overflow-scrolling: touch;
-      }
-
-      /* Glassmorphism utility */
-      .glass {
-        background: rgba(255, 255, 255, 0.85);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-      }
-      .glass-dark {
-        background: rgba(15, 23, 42, 0.85);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-      }
-      
-      .mask-image-fade {
-        mask-image: linear-gradient(to right, transparent 0%, black 10px, black 90%, transparent 100%);
-      }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      .smooth-scroll { -webkit-overflow-scrolling: touch; }
+      .mask-image-fade { mask-image: linear-gradient(to right, transparent 0%, black 10px, black 90%, transparent 100%); }
     </style>
   <script type="importmap">
 {
   "imports": {
-    "react": "https://esm.sh/react@18.3.1",
-    "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
-    "react-dom": "https://esm.sh/react-dom@18.3.1",
-    "@google/genai": "https://esm.sh/@google/genai@0.1.2",
-    "lucide-react": "https://esm.sh/lucide-react@0.378.0",
+    "react": "https://esm.sh/react@^19.2.3",
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react/": "https://esm.sh/react@^19.2.3/"
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "vite": "https://esm.sh/vite@^7.3.0"
   }
 }
 </script>
