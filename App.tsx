@@ -6,6 +6,11 @@ import ContactsView from './components/ContactsView';
 import LiveView from './components/LiveView';
 import LoginView from './components/LoginView';
 import TasksView from './components/TasksView';
+import DealsView from './components/DealsView';
+import CalendarView from './components/CalendarView';
+import DocumentsView from './components/DocumentsView';
+import AutomationsView from './components/AutomationsView';
+import NotificationsView from './components/NotificationsView';
 import BottomNav from './components/BottomNav';
 import Sidebar from './components/Sidebar';
 import { Loader2 } from 'lucide-react';
@@ -14,6 +19,7 @@ const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<AppView>(AppView.DASHBOARD);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [checkingAuth, setCheckingAuth] = useState(true);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   useEffect(() => {
     // Check for existing session token
@@ -42,11 +48,21 @@ const App: React.FC = () => {
   const renderView = () => {
     switch (currentView) {
       case AppView.DASHBOARD:
-        return <Dashboard />;
+        return <Dashboard setAppView={setCurrentView} toggleMobileMenu={() => setShowMobileMenu(true)} />;
+      case AppView.DEALS:
+        return <DealsView />;
+      case AppView.CALENDAR:
+        return <CalendarView />;
+      case AppView.DOCUMENTS:
+        return <DocumentsView />;
       case AppView.CONTACTS:
         return <ContactsView />;
       case AppView.TASKS:
         return <TasksView />;
+      case AppView.AUTOMATIONS:
+        return <AutomationsView />;
+      case AppView.NOTIFICATIONS:
+        return <NotificationsView />;
       case AppView.ASSISTANT:
       case AppView.CHAT:
         return <ChatView />;
@@ -76,10 +92,14 @@ const App: React.FC = () => {
   return (
     <div className="h-[100dvh] bg-nexus-900 w-full relative flex overflow-hidden">
       
-      {/* Tablet/Desktop Sidebar - Hidden on Mobile */}
-      <div className="hidden md:flex h-full shrink-0 z-50 animate-fade-in-up">
-        <Sidebar currentView={currentView} setView={setCurrentView} onLogout={handleLogout} />
-      </div>
+      {/* Sidebar - Desktop & Mobile Drawer */}
+      <Sidebar 
+          currentView={currentView} 
+          setView={setCurrentView} 
+          onLogout={handleLogout} 
+          showMobileMenu={showMobileMenu}
+          closeMobileMenu={() => setShowMobileMenu(false)}
+      />
 
       {/* Main Content Area */}
       <main className="flex-1 overflow-hidden relative z-0 flex flex-col bg-slate-50">

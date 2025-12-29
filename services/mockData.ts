@@ -1,4 +1,4 @@
-import { Activity, Contact, Deal, Lead, TeamMember, Task } from '../types';
+import { Activity, Contact, Deal, Lead, TeamMember, Task, CalendarEvent, DocFile, AutomationRule, NotificationItem } from '../types';
 
 export const MOCK_LEADS: Lead[] = [
   { id: '1', fullName: 'Alice Johnson', email: 'alice@techcorp.com', status: 'NEW', source: 'Website', ownerId: 'u1', createdAt: '2023-10-25' },
@@ -37,6 +37,35 @@ export const MOCK_TASKS: Task[] = [
     { id: 't3', title: 'Update CRM Records', description: 'Clean up duplicate leads imported from the event list.', dueDate: '2023-10-30', priority: 'LOW', status: 'DONE', assignedToId: '4', tags: ['Admin'] },
     { id: 't4', title: 'Client Onboarding', description: 'Schedule kickoff call with RetailCo team.', dueDate: '2023-11-01', priority: 'HIGH', status: 'REVIEW', assignedToId: '3', tags: ['Customer Success'] },
     { id: 't5', title: 'Prepare Slide Deck', description: 'Slides for Monday all-hands meeting.', dueDate: '2023-11-03', priority: 'MEDIUM', status: 'TODO', assignedToId: '1', tags: ['Internal'] },
+];
+
+// Calendar Events
+export const MOCK_EVENTS: CalendarEvent[] = [
+    { id: 'e1', title: 'TechCorp Demo', start: new Date(new Date().setHours(10, 0, 0, 0)), end: new Date(new Date().setHours(11, 0, 0, 0)), type: 'MEETING', participants: ['Sarah Connor', 'Alex Lewis'] },
+    { id: 'e2', title: 'Internal Sync', start: new Date(new Date().setHours(14, 0, 0, 0)), end: new Date(new Date().setHours(14, 30, 0, 0)), type: 'CALL', participants: ['Team'] },
+    { id: 'e3', title: 'Contract Review', start: new Date(new Date().setDate(new Date().getDate() + 1)), end: new Date(new Date().setDate(new Date().getDate() + 1)), type: 'DEADLINE', participants: ['Legal'] },
+];
+
+// Documents
+export const MOCK_DOCUMENTS: DocFile[] = [
+    { id: 'd1', name: 'TechCorp_MSA_Final.pdf', type: 'PDF', size: '2.4 MB', uploadedAt: new Date('2023-10-20'), linkedTo: 'TechCorp' },
+    { id: 'd2', name: 'Q4_Sales_Deck.pptx', type: 'DOC', size: '15.1 MB', uploadedAt: new Date('2023-10-18'), linkedTo: 'Internal' },
+    { id: 'd3', name: 'RetailCo_Proposal_v2.pdf', type: 'PDF', size: '1.2 MB', uploadedAt: new Date('2023-10-25'), linkedTo: 'RetailCo' },
+    { id: 'd4', name: 'Invoice_#1024.pdf', type: 'PDF', size: '0.5 MB', uploadedAt: new Date('2023-10-26'), linkedTo: 'Finance' },
+];
+
+// Automations
+export const MOCK_AUTOMATIONS: AutomationRule[] = [
+    { id: 'a1', name: 'New Lead Welcome', trigger: 'Lead Status = New', action: 'Send Email: Welcome Sequence', active: true },
+    { id: 'a2', name: 'Deal Won Alert', trigger: 'Deal Stage = Won', action: 'Notify: Finance Team', active: true },
+    { id: 'a3', name: 'Stale Lead Revival', trigger: 'No Activity > 30 Days', action: 'Create Task: Follow Up', active: false },
+];
+
+// Notifications
+export const MOCK_NOTIFICATIONS: NotificationItem[] = [
+    { id: 'n1', title: 'Deal Closed!', message: 'Alex Lewis closed TechCorp Renewal ($50k).', type: 'SUCCESS', timestamp: new Date(), read: false },
+    { id: 'n2', title: 'Meeting Reminder', message: 'Demo with TechCorp starts in 15 mins.', type: 'INFO', timestamp: new Date(Date.now() - 1000 * 60 * 15), read: false },
+    { id: 'n3', title: 'Task Overdue', message: 'Prepare Q4 Report was due yesterday.', type: 'ALERT', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24), read: true },
 ];
 
 export const MOCK_REVENUE_DATA = [

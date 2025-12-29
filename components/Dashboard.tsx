@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { generatePipelineInsight } from '../services/geminiService';
 import { getDashboardSummary } from '../services/mockData';
-import { TrendingUp, Users, DollarSign, Activity, Sparkles, Bell, Phone, CheckCircle2, ArrowUpRight, ChevronDown, Trophy, RefreshCw, Loader2 } from 'lucide-react';
+import { TrendingUp, Users, DollarSign, Activity, Sparkles, Bell, Phone, CheckCircle2, ArrowUpRight, ChevronDown, Trophy, RefreshCw, Loader2, Menu } from 'lucide-react';
+import { AppView } from '../types';
 
-const Dashboard: React.FC = () => {
+interface DashboardProps {
+  setAppView?: (view: AppView) => void;
+  toggleMobileMenu?: () => void;
+}
+
+const Dashboard: React.FC<DashboardProps> = ({ setAppView, toggleMobileMenu }) => {
   const [insight, setInsight] = useState("Analyzing pipeline...");
   const [filterPeriod, setFilterPeriod] = useState("month");
   const [filterOwner, setFilterOwner] = useState<'me'|'all'>("me");
@@ -59,12 +65,18 @@ const Dashboard: React.FC = () => {
       {/* Sticky Header */}
       <div className={`absolute top-0 left-0 right-0 z-20 px-6 pt-safe-top pb-3 transition-all duration-300 ${scrolled ? 'bg-white/80 backdrop-blur-xl border-b border-slate-200/50 shadow-sm' : 'bg-transparent'}`}>
         <div className="flex justify-between items-center mt-2">
-            <div>
-               <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-0.5 flex items-center gap-1.5">
-                   {currentDate}
-                   {isRefreshing && <span className="text-indigo-500 font-bold animate-pulse">• Syncing</span>}
-               </p>
-               <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Dashboard</h1>
+            <div className="flex items-center gap-3">
+                 {/* Mobile Hamburger */}
+                 <button onClick={toggleMobileMenu} className="md:hidden w-10 h-10 -ml-2 rounded-full flex items-center justify-center hover:bg-black/5 active:scale-95 transition-all">
+                    <Menu className="w-6 h-6 text-slate-900" />
+                 </button>
+                 <div>
+                   <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-0.5 flex items-center gap-1.5">
+                       {currentDate}
+                       {isRefreshing && <span className="text-indigo-500 font-bold animate-pulse">• Syncing</span>}
+                   </p>
+                   <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Dashboard</h1>
+                </div>
             </div>
             <div className="flex gap-3">
                 <button 
@@ -73,7 +85,10 @@ const Dashboard: React.FC = () => {
                 >
                     <RefreshCw className={`w-5 h-5 ${isRefreshing ? 'animate-spin' : ''}`} />
                 </button>
-                <button className="w-10 h-10 rounded-full bg-white/50 border border-slate-200 shadow-sm flex items-center justify-center active:scale-95 transition-transform backdrop-blur-sm hover:bg-white relative">
+                <button 
+                    onClick={() => setAppView?.(AppView.NOTIFICATIONS)}
+                    className="w-10 h-10 rounded-full bg-white/50 border border-slate-200 shadow-sm flex items-center justify-center active:scale-95 transition-transform backdrop-blur-sm hover:bg-white relative"
+                >
                     <Bell className="w-5 h-5 text-slate-600" />
                     <span className="absolute top-0 right-0 w-2 h-2 bg-rose-500 rounded-full border border-white"></span>
                 </button>

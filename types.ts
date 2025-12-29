@@ -2,8 +2,13 @@ import { Type } from "@google/genai";
 
 export enum AppView {
   DASHBOARD = 'DASHBOARD',
-  CONTACTS = 'CONTACTS',
+  DEALS = 'DEALS',
   TASKS = 'TASKS',
+  CALENDAR = 'CALENDAR',
+  DOCUMENTS = 'DOCUMENTS',
+  AUTOMATIONS = 'AUTOMATIONS',
+  NOTIFICATIONS = 'NOTIFICATIONS',
+  CONTACTS = 'CONTACTS',
   ASSISTANT = 'ASSISTANT',
   CHAT = 'CHAT',
   LIVE = 'LIVE'
@@ -64,6 +69,42 @@ export interface Task {
   status: TaskStatus;
   assignedToId: string;
   tags: string[];
+}
+
+export interface CalendarEvent {
+  id: string;
+  title: string;
+  start: Date;
+  end: Date;
+  type: 'MEETING' | 'CALL' | 'DEADLINE';
+  participants: string[];
+  description?: string;
+}
+
+export interface DocFile {
+  id: string;
+  name: string;
+  type: 'PDF' | 'DOC' | 'IMG' | 'SPREADSHEET';
+  size: string;
+  uploadedAt: Date;
+  linkedTo?: string; // Deal ID or Contact ID
+}
+
+export interface AutomationRule {
+  id: string;
+  name: string;
+  trigger: string;
+  action: string;
+  active: boolean;
+}
+
+export interface NotificationItem {
+  id: string;
+  title: string;
+  message: string;
+  type: 'ALERT' | 'INFO' | 'SUCCESS';
+  timestamp: Date;
+  read: boolean;
 }
 
 export interface TeamMember {
