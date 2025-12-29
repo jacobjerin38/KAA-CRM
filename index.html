@@ -8,7 +8,7 @@
     <meta name="theme-color" content="#f8fafc" />
     <title>KAA CRM Mobile</title>
     
-    <!-- Polyfill for runtime safety if env vars fail to inject -->
+    <!-- Polyfill for process.env to prevent runtime crashes if replacement fails -->
     <script>
       window.process = window.process || { env: { API_KEY: '' } };
     </script>
@@ -80,9 +80,9 @@
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
     "react/": "https://esm.sh/react@^19.2.3/",
     "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
-    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
     "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
-    "vite": "https://esm.sh/vite@^7.3.0"
+    "vite": "https://esm.sh/vite@^7.3.0",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2"
   }
 }
 </script>
