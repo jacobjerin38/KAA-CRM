@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { getGeminiClient } from '../services/geminiService';
 import { ChatMessage, CRM_MODEL } from '../types';
 import { Send, Bot, User, Loader2, Sparkles, Plus, Image as ImageIcon } from 'lucide-react';
-import { GenerateContentResponse } from '@google/genai';
+import { GenerateContentResponse, Chat } from '@google/genai';
 
 const SUGGESTED_PROMPTS = [
     "Draft a follow-up for Sarah",
@@ -19,12 +19,8 @@ const ChatView: React.FC = () => {
   const [isStreaming, setIsStreaming] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
-  const chatSessionRef = useRef(getGeminiClient().chats.create({
-    model: CRM_MODEL,
-    config: { 
-        systemInstruction: "You are KAA CRM Assistant. Be concise, professional, and mobile-friendly." 
-    }
-  }));
+  // Use a ref for the chat session but initialize it in useEffect
+  const chatSessionRef = useRef<Chat | null>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -33,6 +29,21 @@ const ChatView: React.FC = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Initialize Chat Session safely
+  useEffect(() => {
+    try {
+        const ai = getGeminiClient();
+        chatSessionRef.current = ai.chats.create({
+            model: CRM_MODEL,
+            config: { 
+                systemInstruction: "You are KAA CRM Assistant. Be concise, professional, and mobile-friendly." 
+            }
+        });
+    } catch (e) {
+        console.error("Failed to initialize chat session", e);
+    }
+  }, []);
 
   const handleSend = async (text: string = input) => {
     if (!text.trim() || isStreaming) return;
@@ -58,6 +69,10 @@ const ChatView: React.FC = () => {
     }]);
 
     try {
+      if (!chatSessionRef.current) {
+          throw new Error("Chat session not initialized");
+      }
+      
       const result = await chatSessionRef.current.sendMessageStream({ message: text });
       let fullText = '';
       
@@ -72,9 +87,10 @@ const ChatView: React.FC = () => {
         }
       }
     } catch (error) {
+      console.error(error);
       setMessages(prev => prev.map(msg => 
         msg.id === modelMsgId 
-        ? { ...msg, text: "I'm having trouble connecting right now.", isThinking: false } 
+        ? { ...msg, text: "I'm having trouble connecting right now. Please check your API Key configuration.", isThinking: false } 
         : msg
       ));
     } finally {

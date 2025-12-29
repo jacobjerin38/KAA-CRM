@@ -1,21 +1,29 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { CRM_MODEL, LeadAnalysis } from "../types";
 
-// Safe initialization
-const apiKey = process.env.API_KEY || 'MISSING_KEY';
-const ai = new GoogleGenAI({ apiKey });
+// Singleton instance variable
+let aiInstance: GoogleGenAI | null = null;
 
+// Lazy initialization function
 export const getGeminiClient = () => {
-    if (apiKey === 'MISSING_KEY') {
-        console.warn("API Key is missing. AI features will be disabled.");
+    if (!aiInstance) {
+        // Fallback to a dummy key to prevent constructor crash if env var is missing.
+        // Actual API calls will fail gracefully with auth errors instead of crashing the app.
+        const apiKey = process.env.API_KEY || 'MISSING_KEY';
+        aiInstance = new GoogleGenAI({ apiKey });
     }
-    return ai;
+    return aiInstance;
 };
 
 export const analyzeLead = async (notes: string, company: string): Promise<LeadAnalysis> => {
-  if (apiKey === 'MISSING_KEY') {
-      return { score: 0, reasoning: "API Key missing.", suggestedAction: "Configure API Key" };
+  const ai = getGeminiClient();
+  // We can check if the key is effectively valid before making a call if we want,
+  // but the SDK handles auth errors.
+  
+  if (process.env.API_KEY === 'MISSING_KEY' || !process.env.API_KEY) {
+      return { score: 50, reasoning: "API Key missing. Please configure your environment.", suggestedAction: "Configure API Key" };
   }
+
   try {
     const response = await ai.models.generateContent({
       model: CRM_MODEL,
@@ -40,15 +48,15 @@ export const analyzeLead = async (notes: string, company: string): Promise<LeadA
     throw new Error("No data returned");
   } catch (error) {
     console.error("Lead analysis error:", error);
-    // Fallback if AI fails
     return { score: 50, reasoning: "Analysis currently unavailable.", suggestedAction: "Review manually" };
   }
 };
 
 export const generatePipelineInsight = async (data: any) => {
-    if (apiKey === 'MISSING_KEY') return "Welcome to KAA CRM. Please configure your API Key to enable AI insights.";
+    if (!process.env.API_KEY) return "Welcome to KAA CRM. Please configure your API Key to enable AI insights.";
     
     try {
+        const ai = getGeminiClient();
         const prompt = `
         Act as a CRM Sales Manager. Review the following dashboard data and provide a concise, motivating 2-sentence executive summary.
         Highlight key wins or urgent focus areas.
@@ -72,9 +80,10 @@ export const generatePipelineInsight = async (data: any) => {
 };
 
 export const draftEmail = async (recipient: string, topic: string) => {
-    if (apiKey === 'MISSING_KEY') return "API Key missing. Cannot draft email.";
+    if (!process.env.API_KEY) return "API Key missing. Cannot draft email.";
     
     try {
+        const ai = getGeminiClient();
         const response = await ai.models.generateContent({
             model: CRM_MODEL,
             contents: `Draft a short, professional email to ${recipient} about "${topic}". Do not include subject line placeholders, just the body.`,
@@ -82,13 +91,14 @@ export const draftEmail = async (recipient: string, topic: string) => {
         return response.text || "";
     } catch (error) {
         console.error(error);
-        return "";
+        return "Could not generate email draft.";
     }
 };
 
 export const generateImage = async (prompt: string) => {
-    if (apiKey === 'MISSING_KEY') throw new Error("API Key missing");
+    if (!process.env.API_KEY) throw new Error("API Key missing");
     
+    const ai = getGeminiClient();
     const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash-image',
         contents: {
