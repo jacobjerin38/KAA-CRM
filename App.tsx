@@ -5,6 +5,7 @@ import ChatView from './components/ChatView';
 import ContactsView from './components/ContactsView';
 import LiveView from './components/LiveView';
 import LoginView from './components/LoginView';
+import TasksView from './components/TasksView';
 import BottomNav from './components/BottomNav';
 import Sidebar from './components/Sidebar';
 import { Loader2 } from 'lucide-react';
@@ -44,6 +45,8 @@ const App: React.FC = () => {
         return <Dashboard />;
       case AppView.CONTACTS:
         return <ContactsView />;
+      case AppView.TASKS:
+        return <TasksView />;
       case AppView.ASSISTANT:
       case AppView.CHAT:
         return <ChatView />;

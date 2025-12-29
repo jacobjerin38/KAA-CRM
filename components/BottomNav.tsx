@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppView } from '../types';
-import { Home, MessageSquare, Mic, Image as ImageIcon, Users } from 'lucide-react';
+import { Home, MessageSquare, Mic, Image as ImageIcon, Users, ClipboardList } from 'lucide-react';
 
 interface BottomNavProps {
   currentView: AppView;
@@ -10,6 +10,7 @@ interface BottomNavProps {
 const BottomNav: React.FC<BottomNavProps> = ({ currentView, setView }) => {
   const navItems = [
     { id: AppView.DASHBOARD, icon: Home, label: 'Home' },
+    { id: AppView.TASKS, icon: ClipboardList, label: 'Tasks' },
     { id: AppView.CONTACTS, icon: Users, label: 'People' },
     { id: AppView.CHAT, icon: MessageSquare, label: 'Chat' },
     { id: AppView.LIVE, icon: Mic, label: 'Live' },

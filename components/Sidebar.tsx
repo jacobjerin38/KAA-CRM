@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { AppView } from '../types';
-import { LayoutDashboard, Users, MessageSquareText, Settings, Hexagon, Mic, Image as ImageIcon, RefreshCw, LogOut } from 'lucide-react';
+import { LayoutDashboard, Users, MessageSquareText, Settings, Hexagon, Mic, Image as ImageIcon, RefreshCw, LogOut, ClipboardList } from 'lucide-react';
 
 interface SidebarProps {
   currentView: AppView;
@@ -12,6 +12,7 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ currentView, setView, onLogout }) => {
   const menuItems = [
     { id: AppView.DASHBOARD, icon: LayoutDashboard, label: 'Dashboard' },
+    { id: AppView.TASKS, icon: ClipboardList, label: 'Tasks' },
     { id: AppView.CONTACTS, icon: Users, label: 'Contacts' },
     { id: AppView.CHAT, icon: MessageSquareText, label: 'Assistant' },
     { id: AppView.LIVE, icon: Mic, label: 'Live Mode' },

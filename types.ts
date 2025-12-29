@@ -3,6 +3,7 @@ import { Type } from "@google/genai";
 export enum AppView {
   DASHBOARD = 'DASHBOARD',
   CONTACTS = 'CONTACTS',
+  TASKS = 'TASKS',
   ASSISTANT = 'ASSISTANT',
   CHAT = 'CHAT',
   LIVE = 'LIVE'
@@ -49,6 +50,20 @@ export interface Activity {
   relatedType: 'DEAL' | 'CONTACT' | 'ACCOUNT' | 'LEAD';
   relatedId: string;
   ownerId: string;
+}
+
+export type TaskStatus = 'TODO' | 'IN_PROGRESS' | 'REVIEW' | 'DONE';
+export type TaskPriority = 'LOW' | 'MEDIUM' | 'HIGH';
+
+export interface Task {
+  id: string;
+  title: string;
+  description: string;
+  dueDate: string;
+  priority: TaskPriority;
+  status: TaskStatus;
+  assignedToId: string;
+  tags: string[];
 }
 
 export interface TeamMember {

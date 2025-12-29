@@ -1,4 +1,4 @@
-import { Activity, Contact, Deal, Lead, TeamMember } from '../types';
+import { Activity, Contact, Deal, Lead, TeamMember, Task } from '../types';
 
 export const MOCK_LEADS: Lead[] = [
   { id: '1', fullName: 'Alice Johnson', email: 'alice@techcorp.com', status: 'NEW', source: 'Website', ownerId: 'u1', createdAt: '2023-10-25' },
@@ -29,6 +29,14 @@ export const MOCK_TEAM: TeamMember[] = [
     { id: '2', name: 'Sarah Chen', role: 'Senior Rep', revenue: 180000, dealsClosed: 8, trend: 5, avatar: 'bg-emerald-100 text-emerald-600', status: 'busy' },
     { id: '3', name: 'Mike Ross', role: 'Account Exec', revenue: 120000, dealsClosed: 15, trend: -2, avatar: 'bg-blue-100 text-blue-600', status: 'offline' },
     { id: '4', name: 'Jessica Day', role: 'SDR', revenue: 45000, dealsClosed: 4, trend: 20, avatar: 'bg-purple-100 text-purple-600', status: 'online' },
+];
+
+export const MOCK_TASKS: Task[] = [
+    { id: 't1', title: 'Draft Q3 Contract', description: 'Finalize terms for the TechCorp renewal including the new SLA clauses.', dueDate: '2023-11-05', priority: 'HIGH', status: 'IN_PROGRESS', assignedToId: '1', tags: ['Legal', 'Urgent'] },
+    { id: 't2', title: 'Competitor Analysis', description: 'Review new pricing model of competitor X and prepare a battle card.', dueDate: '2023-11-10', priority: 'MEDIUM', status: 'TODO', assignedToId: '2', tags: ['Strategy'] },
+    { id: 't3', title: 'Update CRM Records', description: 'Clean up duplicate leads imported from the event list.', dueDate: '2023-10-30', priority: 'LOW', status: 'DONE', assignedToId: '4', tags: ['Admin'] },
+    { id: 't4', title: 'Client Onboarding', description: 'Schedule kickoff call with RetailCo team.', dueDate: '2023-11-01', priority: 'HIGH', status: 'REVIEW', assignedToId: '3', tags: ['Customer Success'] },
+    { id: 't5', title: 'Prepare Slide Deck', description: 'Slides for Monday all-hands meeting.', dueDate: '2023-11-03', priority: 'MEDIUM', status: 'TODO', assignedToId: '1', tags: ['Internal'] },
 ];
 
 export const MOCK_REVENUE_DATA = [
